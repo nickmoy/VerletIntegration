@@ -4,7 +4,7 @@ Basic demo of Verlet Integration using SDL2 and OpenGL3. This was a small person
 ## Build
 
 ### Mac OS
-Simply run `make` in main directory.
+Simply run `make` in main directory. The executable is named play.
 
 ### Other systems
 For other systems, I haven't tested, but I think all you need to do is place your own SDL2 library file and opengl driver in the Lib folder and run `make`. Or modify the makefile to include the search path for these files.
