@@ -17,12 +17,11 @@
 #include "window.hpp"
 
 #define FPS 60
-const float FRAME_MSEC = 1000/60;
+const float FRAME_MSEC = 1000.0f/60;
 const float TIME_STEP = FRAME_MSEC/1000;
 
 int main(int argc, char *argv[])
 {
-    
     // Main loop objects
     SDL_Event e;
     bool running = true;
@@ -80,8 +79,3 @@ int main(int argc, char *argv[])
     SDL_Quit();
     return 0;
 }
-
-
-
-
-
