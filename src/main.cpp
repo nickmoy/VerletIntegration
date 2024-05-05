@@ -17,16 +17,16 @@
 #include "window.hpp"
 
 #define FPS 60
-const float FRAME_MSEC = 1000.0f/60;
-const float TIME_STEP = FRAME_MSEC/1000;
+const float FRAME_DELTA_MIL_SEC = 1000.0f/60;   // Fixed update FPS
+const float TIME_STEP_DELTA = 1.0f/60;          // Fixed Game logic delta time
 
 int main(int argc, char *argv[])
 {
     // Main loop objects
     SDL_Event e;
     bool running = true;
-    unsigned int a = SDL_GetTicks();
-    unsigned int b = SDL_GetTicks();
+    unsigned int a = SDL_GetTicks();            // Frame update time guard
+    unsigned int b = SDL_GetTicks();            // Game logic time guard
     unsigned int lastRender = SDL_GetTicks();
     
     Window window = Window();
@@ -36,39 +36,43 @@ int main(int argc, char *argv[])
     window.addRenderer(&renderer);
     renderer.addPhysics(&physics);
     
-    glClearColor(210.0/255, 222.0/255, 228.0/255, 1.0);
+    glm::vec4 Light_Gray = glm::vec4(210.0f/255, 222.0f/255, 228.0f/255, 1.0);
+    glClearColor(Light_Gray.x, Light_Gray.y, Light_Gray.z, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     SDL_GL_SwapWindow(window);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    std::cout << "Game started!";
     
     // Main program loop
     while(running)
     {
         // Cap Framerate
         a = SDL_GetTicks();
+
+        // If Game logic isn't ready to update again since
+        // last frame update, wait
         if(a < b)
         {
-            SDL_Delay(1);
+            SDL_Delay(2);
         }
         else
         {
+            // Game logic is now behind current time, so we update
+            // Game logic until it is ahead of time
             while(a > b)
             {
-                //std::cout << "delta: " << a-b << "\n";
                 // Poll events
                 window.PollIO(e, &running);
                 
                 /* Game physics */
-                physics.update((float)1.0f/FPS);
+                physics.update(TIME_STEP_DELTA);
                 
-                b += FRAME_MSEC;
+                b += FRAME_DELTA_MIL_SEC;
             }
             
             // Render
-            //unsigned int current = SDL_GetTicks();
-            //std::cout << "FPS: " << 1000/(current - lastRender) << "\n";
             renderer.render();
-            //lastRender = SDL_GetTicks();
             
             // Update screen
             SDL_GL_SwapWindow(window);

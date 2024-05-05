@@ -3,6 +3,7 @@
 # Mac and Clangd files
 *.DS_Store
 *.idx
+src/compile_commands.json
 
 # Prerequisites
 *.d
