@@ -1,7 +1,8 @@
 ### C++ ###
 
-# Mac files
-.DS_STORE
+# Mac and Clangd files
+*.DS_Store
+*.idx
 
 # Prerequisites
 *.d
